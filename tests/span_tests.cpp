@@ -337,6 +337,18 @@ TEST(convert_utf8_to_utf16_span_matches_pointer_api) {
   }
 }
 
+TEST(convert_utf8_to_utf16_span_threshold_boundary_matches_pointer_api) {
+  // Exercise both sides of the <= 16 short-input cutoff.
+  for (size_t size = 14; size <= 18; size++) {
+    const std::string input(size, 'x');
+
+    assert_convert_utf8_to_utf16le_span_matches_pointer(input);
+    assert_convert_utf8_to_utf16be_span_matches_pointer(input);
+    assert_convert_utf8_to_utf16le_with_errors_span_matches_pointer(input);
+    assert_convert_utf8_to_utf16be_with_errors_span_matches_pointer(input);
+  }
+}
+
 TEST(convert_utf8_to_utf16_span_rejects_invalid_utf8_like_pointer_api) {
   const std::array<std::string, 5> inputs = {
       std::string("\xFF\xFF", 2),
